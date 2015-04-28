@@ -20,7 +20,7 @@
             <td>
                 <input type="submit"
                        name="login"
-                       value="Login!"
+                       value="Login"
                     />
             </td>
         </tr>

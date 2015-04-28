@@ -2,9 +2,9 @@
 namespace PhotoAlbum\Repositories;
 
 use PhotoAlbum\Db;
-use PhotoAlbum\Models\User;
+use PhotoAlbum\Models\Category;
 
-class UserRepository
+class CategoryRepository
 {
     /**
      * @var \PhotoAlbum\Db
@@ -12,7 +12,7 @@ class UserRepository
     private $db;
 
     /**
-     * @var UserRepository
+     * @var CategoryRepository
      */
     private static $inst = null;
 
@@ -22,7 +22,7 @@ class UserRepository
     }
 
     /**
-     * @return UserRepository
+     * @return CategoryRepository
      */
     public static function create()
     {
@@ -35,19 +35,16 @@ class UserRepository
     }
 
     /**
-     * @param $user
-     * @param $pass
-     * @return bool|User
+     * @param $name
+     * @return bool|Category
      */
-    public function getOneByDetails($user, $pass)
+    public function getOneByName($name)
     {
-        $query = "SELECT id, username, password
-        FROM users WHERE username = ? AND password = ?";
+        $query = "SELECT id, name, user_id FROM categories WHERE name = ?";
 
         $this->db->query($query,
             [
-                $user,
-                md5($pass)
+                $name
             ]
         );
 
@@ -61,7 +58,7 @@ class UserRepository
 
     public function getOne($id)
     {
-        $query = "SELECT id, username, password FROM users WHERE id = ?";
+        $query = "SELECT id, name, user_id FROM categories WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -71,21 +68,23 @@ class UserRepository
             return false;
         }
 
-        $user = new User(
-            $result['username'],
-            $result['password'],
+        $user = UserRepository::create()->getOne($result['user_id']);
+
+        $category = new Category(
+            $result['name'],
+            $user,
             $result['id']
         );
 
-        return $user;
+        return $category;
     }
 
     /**
-     * @return User[]
+     * @return Category[]
      */
     public function getAll()
     {
-        $query = "SELECT id, username, password FROM users";
+        $query = "SELECT id, name, user_id FROM categories";
 
         $this->db->query($query);
 
@@ -94,9 +93,11 @@ class UserRepository
 
         foreach ($result as $row)
         {
-            $collection[] = new User(
-                $row['username'],
-                $row['password'],
+            $user = UserRepository::create()->getOne($row['user_id']);
+
+            $collection[] = new Category(
+                $row['name'],
+                $user,
                 $row['id']
             );
         }
@@ -104,17 +105,17 @@ class UserRepository
         return $collection;
     }
 
-    public function save(User $user)
+    public function save(Category $category)
     {
-        $query = "INSERT INTO users (username, password) VALUES (?, ?)";
+        $query = "INSERT INTO categories (name, user_id) VALUES (?, ?)";
         $params = [
-            $user->getUsername(),
-            $user->getPassword()
+            $category->getName(),
+            $category->getUser()->getId()
         ];
 
-        if ($user->getId()) {
-            $query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
-            $params[] = $user->getId();
+        if ($category->getId()) {
+            $query = "UPDATE categories SET name = ?, user_id = ? WHERE id = ?";
+            $params[] = $category->getId();
         }
 
         $this->db->query($query, $params);

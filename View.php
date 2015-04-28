@@ -6,9 +6,9 @@ class View
     private $controllerName;
     private $actionName;
 
-    public function __construct($controllName, $actionName)
+    public function __construct($controllerName, $actionName)
     {
-        $this->controllerName = $controllName;
+        $this->controllerName = $controllerName;
 
         if (!$actionName) {
             $actionName = 'index';
