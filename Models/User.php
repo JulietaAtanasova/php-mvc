@@ -1,7 +1,7 @@
 <?php
 namespace PhotoAlbum\Models;
 
-use PhotoAlbum\Repositories\PlayerRepository;
+use PhotoAlbum\Repositories\UserRepository;
 
 class User
 {
@@ -66,41 +66,9 @@ class User
         $this->password = md5($password);
     }
 
-    /**
-     * @return University[]
-     */
-    public function getUniversities()
-    {
-        return $this->universities;
-    }
-
-    /**
-     * @param University[] $universities
-     */
-    public function setUniversities($universities)
-    {
-        $this->universities = $universities;
-    }
-
-    /**
-     * @return PlayerStage[]
-     */
-    public function getStages()
-    {
-        return $this->stages;
-    }
-
-    /**
-     * @param PlayerStage[] $stages
-     */
-    public function setStages($stages)
-    {
-        $this->stages = $stages;
-    }
-
     public function save()
     {
-        return PlayerRepository::create()->save($this);
+        return UserRepository::create()->save($this);
     }
 
 }

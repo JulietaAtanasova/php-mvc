@@ -16,8 +16,8 @@ class Controller
     protected $controllerName;
 
     public function __construct(
-        \Uniwars\View $view,
-        \Uniwars\Request $request,
+        \PhotoAlbum\View $view,
+        \PhotoAlbum\Request $request,
         $name
     )
     {
@@ -29,11 +29,7 @@ class Controller
 
     protected function onLoad() { }
 
-    public function redirect(
-        $controller = null,
-        $action = null,
-        $params = []
-    ) {
+    public function redirect($controller = null, $action = null, $params = []) {
         $requestUri = explode('/', $_SERVER['REQUEST_URI']);
         $url = "//" . $_SERVER['HTTP_HOST'] . "/";
 

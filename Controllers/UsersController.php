@@ -1,8 +1,8 @@
 <?php
-namespace Uniwars\Controllers;
+namespace PhotoAlbum\Controllers;
 
-use Uniwars\Models\User;
-use Uniwars\Repositories\PlayerRepository;
+use PhotoAlbum\Models\User;
+use PhotoAlbum\Repositories\UserRepository;
 
 class UsersController extends Controller
 {
@@ -14,20 +14,19 @@ class UsersController extends Controller
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $player = PlayerRepository::create()->getOneByDetails(
+            $user = UserRepository::create()->getOneByDetails(
                 $username,
                 $password
             );
 
-            if (!$player) {
+            if (!$user) {
                 $this->view->error = 'Invalid details';
                 return;
             }
 
-            $_SESSION['userid'] = $player->getId();
-            $_SESSION['university_id'] = $player->getUniversities()[0]->getId();
-            $this->view->user = $player->getUsername();
-            $this->redirect('game');
+            $_SESSION['userid'] = $user->getId();
+            $this->view->user = $user->getUsername();
+            $this->redirect('home');
         }
     }
 
@@ -38,9 +37,9 @@ class UsersController extends Controller
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $player = new User($username, $password);
+            $user = new User($username, $password);
 
-            if (!$player->save()) {
+            if (!$user->save()) {
                 $this->view->error = 'duplicate users';
             }
 

@@ -4,7 +4,7 @@ namespace PhotoAlbum\Repositories;
 use PhotoAlbum\Db;
 use PhotoAlbum\Models\User;
 
-class PlayerRepository
+class UserRepository
 {
     /**
      * @var \PhotoAlbum\Db
@@ -42,7 +42,7 @@ class PlayerRepository
     public function getOneByDetails($user, $pass)
     {
         $query = "SELECT id, username, password
-        FROM players WHERE username = ? AND password = ?";
+        FROM users WHERE username = ? AND password = ?";
 
         $this->db->query($query,
             [
@@ -62,7 +62,7 @@ class PlayerRepository
     public function getOne($id)
     {
         $query = "SELECT id, username, password
-        FROM players WHERE id = ?";
+        FROM users WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
