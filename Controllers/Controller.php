@@ -15,11 +15,7 @@ class Controller
 
     protected $controllerName;
 
-    public function __construct(
-        \PhotoAlbum\View $view,
-        \PhotoAlbum\Request $request,
-        $name
-    )
+    public function __construct(\PhotoAlbum\View $view, \PhotoAlbum\Request $request, $name)
     {
         $this->view = $view;
         $this->request = $request;

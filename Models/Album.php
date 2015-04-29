@@ -31,7 +31,7 @@ class Album
      */
     private $user;
 
-    function __construct($category, $name, $user, $description, $id = null)
+    function __construct($name, $category, $user, $description, $id = null)
     {
         $this->setCategory($category);
         $this->setDescription($description);
