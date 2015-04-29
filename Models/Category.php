@@ -31,7 +31,6 @@ class Category
         $this->setUser($user);
     }
 
-
     /**
      * @param int $id
      */
@@ -80,4 +79,8 @@ class Category
         return $this->user;
     }
 
+    public function save()
+    {
+        return CategoryRepository::create()->save($this);
+    }
 } 
