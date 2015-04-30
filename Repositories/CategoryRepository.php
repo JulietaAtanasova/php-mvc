@@ -129,4 +129,18 @@ class CategoryRepository
 
         return $this->db->rows() > 0;
     }
+
+    /**
+     * @param Category $category
+     * @return bool
+     */
+    public function delete(Category $category)
+    {
+        $query = "DELETE FROM categories WHERE id = ?";
+        $params = [ $category->getId()];
+
+        $this->db->query($query, $params);
+
+        return $this->db->rows() > 0;
+    }
 }

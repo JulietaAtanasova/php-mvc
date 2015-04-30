@@ -57,4 +57,23 @@ class CategoriesController extends Controller
 
         }
     }
+
+    public function delete()
+    {
+        $this->view->error = false;
+
+        $params = $this->request->getParams();
+        $category = CategoryRepository::create()->getOneByName($params['name']);
+        if(!$category){
+            $this->view->error = 'No such category.';
+            $this->view->category = "";
+            return;
+        }
+
+        $this->view->category = $category->getName();
+
+        if (isset($_POST['delete'])) {
+            CategoryRepository::create()->delete($category);
+        }
+    }
 } 
