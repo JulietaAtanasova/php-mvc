@@ -34,19 +34,27 @@ class CategoriesController extends Controller
     public function edit()
     {
         $this->view->error = false;
-        $this->view->category = "";
-        if (isset($_POST['edit'])) {
-            $params = $this->request->getParams();
-            $category = CategoryRepository::create()->getOneByName($params['name']);
-            $this->view->category = $category->getName();
-            $name = $_POST['name'];
 
-            $category->setName($name);
-            if (!$category->save()) {
-                $this->view->error = 'duplicate categories';
+        $params = $this->request->getParams();
+        $category = CategoryRepository::create()->getOneByName($params['name']);
+        if(!$category){
+            $this->view->error = 'No such category.';
+            $this->view->category = "";
+            return;
+        }
+
+        $this->view->category = $category->getName();
+        if (isset($_POST['edit'])) {
+            $name = $_POST['name'];
+            if($name === ""){
+                $this->view->error = 'empty category name';
+            } else {
+                $category->setName($name);
+                if (!$category->save()) {
+                    $this->view->error = 'duplicate categories';
+                }
             }
 
-            $this->show();
         }
     }
 } 
