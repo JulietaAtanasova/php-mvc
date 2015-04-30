@@ -55,7 +55,10 @@ class CategoryRepository
         return $this->getOne($result['id']);
     }
 
-
+    /**
+     * @param $id
+     * @return bool|Category
+     */
     public function getOne($id)
     {
         $query = "SELECT id, name, user_id FROM categories WHERE id = ?";
@@ -105,6 +108,10 @@ class CategoryRepository
         return $collection;
     }
 
+    /**
+     * @param Category $category
+     * @return bool
+     */
     public function save(Category $category)
     {
         $query = "INSERT INTO categories (name, user_id) VALUES (?, ?)";

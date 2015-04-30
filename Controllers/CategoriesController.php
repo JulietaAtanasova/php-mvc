@@ -34,12 +34,14 @@ class CategoriesController extends Controller
     public function edit()
     {
         $this->view->error = false;
+        $this->view->category = "";
         if (isset($_POST['edit'])) {
+            $params = $this->request->getParams();
+            $category = CategoryRepository::create()->getOneByName($params['name']);
+            $this->view->category = $category->getName();
             $name = $_POST['name'];
 
-            $category = CategoryRepository::create()->getOne(5);
             $category->setName($name);
-
             if (!$category->save()) {
                 $this->view->error = 'duplicate categories';
             }

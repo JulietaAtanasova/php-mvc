@@ -15,20 +15,15 @@ class View
         }
 
         $this->actionName = $actionName;
-
     }
 
     public function render()
     {
-        require_once '/Views/' . $this->controllerName
-            . '/' . $this->actionName . '.php';
+        require_once '/Views/' . $this->controllerName . '/' . $this->actionName . '.php';
     }
 
-    public function url(
-        $controller = null,
-        $action = null,
-        $params = []
-    ) {
+    public function url($controller = null, $action = null, $params = [])
+    {
         $requestUri = explode('/', $_SERVER['REQUEST_URI']);
         $url = "//" . $_SERVER['HTTP_HOST'] . "/";
         foreach ($requestUri as $k => $uri) {

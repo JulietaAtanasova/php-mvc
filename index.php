@@ -42,14 +42,12 @@ foreach ($scriptName as $k => $v) {
     }
 }
 $actionIndex = $controllerIndex + 1;
-
 $controllerName = $requestUri[$controllerIndex];
 $actionName = $requestUri[$actionIndex];
 
 $controllerClassName = '\\PhotoAlbum\\Controllers\\'
     . ucfirst($controllerName)
     . 'Controller';
-
 
 $view = new \PhotoAlbum\View($controllerName, $actionName);
 
@@ -64,11 +62,7 @@ for ($key = $actionIndex + 1; $key < count($requestUri); $key += 2) {
 $requestObject = new \PhotoAlbum\Request($request);
 
 try {
-    $controller = new $controllerClassName(
-        $view,
-        $requestObject,
-        $controllerName
-    );
+    $controller = new $controllerClassName($view, $requestObject, $controllerName);
 } catch (\Exception $e) {
     echo "No such controller";
 }

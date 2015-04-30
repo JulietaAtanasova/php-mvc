@@ -4,7 +4,8 @@
             <td>Category name</td>
             <td>
                 <input type="text"
-                       name="name" />
+                       name="name"
+                       value="<?= $this->category; ?>"/>
             </td>
         </tr>
         <tr>
