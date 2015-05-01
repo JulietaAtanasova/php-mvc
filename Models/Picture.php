@@ -36,6 +36,16 @@ class Picture
      */
     private $album;
 
+    /**
+     * @var Comment[]
+     */
+    private $comments = [];
+
+    /**
+     * @var Vote[];
+     */
+    private $votes = [];
+
     function __construct($name, $url, $album, $description, $createdOn = null, $id = null)
     {
         $this->setAlbum($album);
@@ -68,6 +78,38 @@ class Picture
     public function setCreatedOn($createdOn)
     {
         $this->createdOn = date_create($createdOn);
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\Comment[] $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\Comment[]
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\Vote[] $votes
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\Vote[]
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 
     /**
