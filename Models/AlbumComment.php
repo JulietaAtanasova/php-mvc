@@ -3,6 +3,7 @@
 namespace PhotoAlbum\Models;
 
 use \DateTime;
+use PhotoAlbum\Repositories\AlbumCommentRepository;
 
 class AlbumComment extends Comment
 {
@@ -39,4 +40,8 @@ class AlbumComment extends Comment
         return $this->album;
     }
 
+    public function save()
+    {
+        return AlbumCommentRepository::create()->save($this);
+    }
 }

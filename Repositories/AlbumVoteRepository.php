@@ -14,7 +14,7 @@ class AlbumVoteRepository
     private $db;
 
     /**
-     * @var ALbumVoteRepository
+     * @var AlbumVoteRepository
      */
     private static $inst = null;
 
@@ -24,7 +24,7 @@ class AlbumVoteRepository
     }
 
     /**
-     * @return ALbumVoteRepository
+     * @return AlbumVoteRepository
      */
     public static function create()
     {

@@ -65,6 +65,9 @@ class AlbumRepository
         $pictures = PictureRepository::create()->getByAlbum($album);
         $album->setPictures($pictures);
 
+        $comments = AlbumCommentRepository::create()->getByAlbum($album);
+        $album->setComments($comments);
+
         return $album;
     }
 
@@ -98,6 +101,9 @@ class AlbumRepository
 
             $comments = AlbumCommentRepository::create()->getByAlbum($album);
             $album->setComments($comments);
+
+            $votes = AlbumVoteRepository::create()->getByAlbum($album);
+            $album->setVotes($votes);
 
             $collection[] = $album;
         }
@@ -207,5 +213,30 @@ class AlbumRepository
         $this->db->query($query, $params);
 
         return $this->db->rows() > 0;
+    }
+
+    /**
+     * @param Album $album
+     * @return float
+     */
+    public function getRating(Album $album)
+    {
+        $query = "SELECT rate FROM album_votes WHERE album_id = ?";
+        $params = [ $album->getId()];
+        $this->db->query($query, $params);
+        $result = $this->db->fetchAll();
+
+        $sum = 0;
+        foreach ($result as $row)
+        {
+            $sum += (int)$row['rate'];
+        }
+
+        $rating = 0;
+        if(count($result) >0){
+            $rating = $sum / count($result);
+        }
+
+        return $rating;
     }
 } 

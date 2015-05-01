@@ -57,7 +57,7 @@ class PictureRepository
             $result['name'],
             $result['url'],
             $album,
-            $result['createdOn'],
+            $result['created_on'],
             $result['description'],
             $result['id']
         );
@@ -182,5 +182,26 @@ class PictureRepository
         $this->db->query($query, $params);
 
         return $this->db->rows() > 0;
+    }
+
+    public function getRating(Picture $picture)
+    {
+        $query = "SELECT rate FROM votes WHERE picture_id = ?";
+        $params = [ $picture->getId()];
+        $this->db->query($query, $params);
+        $result = $this->db->fetchAll();
+
+        $sum = 0;
+        foreach ($result as $row)
+        {
+            $sum += (int)$row['rate'];
+        }
+
+        $rating = 0;
+        if(count($result) >0){
+            $rating = $sum / count($result);
+        }
+
+        return $rating;
     }
 } 

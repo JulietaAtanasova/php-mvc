@@ -41,6 +41,11 @@ class Album
      */
     private $comments = [];
 
+    /**
+     * @var AlbumVote[];
+     */
+    private $votes;
+
     function __construct($name, $category, $user, $description, $id = null)
     {
         $this->setCategory($category);
@@ -64,6 +69,22 @@ class Album
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\AlbumVote[] $votes
+     */
+    public function setVotes($votes)
+    {
+        $this->votes = $votes;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\AlbumVote[]
+     */
+    public function getVotes()
+    {
+        return $this->votes;
     }
 
     /**

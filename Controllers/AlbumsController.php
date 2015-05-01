@@ -3,15 +3,36 @@
 namespace PhotoAlbum\Controllers;
 
 use PhotoAlbum\Models\Album;
+use PhotoAlbum\Models\AlbumComment;
 use PhotoAlbum\Repositories\AlbumRepository;
 use PhotoAlbum\Repositories\CategoryRepository;
 use PhotoAlbum\Repositories\UserRepository;
 
 class AlbumsController extends Controller
 {
-    public function show()
+    public function showAll()
     {
         $this->view->albums = AlbumRepository::create()->getAll();
+    }
+
+    public function show()
+    {
+        $this->view->error = false;
+        $params = $this->request->getParams();
+        $album = AlbumRepository::create()->getOne($params['album']);
+        if(!$album){
+            $this->view->error = 'No such album.';
+            $this->view->name = "";
+            return;
+        }
+
+        $this->view->name = $album->getName();
+        $this->view->category = $album->getCategory()->getName();
+        $this->view->user = $album->getUser()->getUsername();
+        $this->view->pictures = $album->getPictures();
+        $this->view->comments = $album->getComments();
+        $this->view->description = $album->getDescription();
+        $this->view->rating = AlbumRepository::create()->getRating($album);
     }
 
     public function add()
@@ -95,6 +116,35 @@ class AlbumsController extends Controller
 
         if (isset($_POST['delete'])) {
             AlbumRepository::create()->delete($album);
+        }
+    }
+
+    public function addComment()
+    {
+        $this->view->error = false;
+        $params = $this->request->getParams();
+        $album = AlbumRepository::create()->getOne($params['album']);
+        if(!$album){
+            $this->view->error = 'No such album.';
+            $this->view->album = "";
+            return;
+        }
+
+        $this->view->album = $album->getName();
+
+        if (isset($_POST['create'])) {
+            $text = $_POST['comment'];
+            if($text === ""){
+                $this->view->error = 'empty comment text';
+                return;
+            }
+
+            $user = UserRepository::create()->getOne($_SESSION['userid']);
+
+            $comment = new AlbumComment($text, $album, $user);
+            if (!$comment->save()) {
+                $this->view->error = 'duplicate comment';
+            }
         }
     }
 } 

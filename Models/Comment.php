@@ -3,6 +3,7 @@
 namespace PhotoAlbum\Models;
 
 use \DateTime;
+use PhotoAlbum\Repositories\CommentRepository;
 
 class Comment
 {
@@ -98,4 +99,8 @@ class Comment
         return $this->user;
     }
 
+    public function save()
+    {
+        return CommentRepository::create()->save($this);
+    }
 }
