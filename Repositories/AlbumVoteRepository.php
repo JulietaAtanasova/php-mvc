@@ -3,10 +3,10 @@
 namespace PhotoAlbum\Repositories;
 
 use PhotoAlbum\Db;
-use PhotoAlbum\Models\Picture;
-use PhotoAlbum\Models\PictureVote;
+use PhotoAlbum\Models\Album;
+use PhotoAlbum\Models\AlbumVote;
 
-class VoteRepository
+class AlbumVoteRepository
 {
     /**
      * @var \PhotoAlbum\Db
@@ -14,7 +14,7 @@ class VoteRepository
     private $db;
 
     /**
-     * @var VoteRepository
+     * @var ALbumVoteRepository
      */
     private static $inst = null;
 
@@ -24,7 +24,7 @@ class VoteRepository
     }
 
     /**
-     * @return VoteRepository
+     * @return ALbumVoteRepository
      */
     public static function create()
     {
@@ -38,11 +38,11 @@ class VoteRepository
 
     /**
      * @param $id
-     * @return bool|PictureVote
+     * @return bool|AlbumVote
      */
     public function getOne($id)
     {
-        $query = "SELECT id, rate, picture_id, user_id FROM votes WHERE id = ?";
+        $query = "SELECT id, rate, album_id, user_id FROM album_votes WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -52,12 +52,13 @@ class VoteRepository
             return false;
         }
 
-        $picture = PictureRepository::create()->getOne($result['picture_id']);
+
+        $album = AlbumRepository::create()->getOne($result['album_id']);
         $user = UserRepository::create()->getOne($result['user_id']);
 
-        $vote = new PictureVote(
+        $vote = new AlbumVote(
             $result['rate'],
-            $picture,
+            $album,
             $user,
             $result['id']
         );
@@ -66,13 +67,13 @@ class VoteRepository
     }
 
     /**
-     * @param Picture $picture
+     * @param Album $album
      * @return array
      */
-    public function getByPicture(Picture $picture){
-        $query = "SELECT id, rate, picture_id, user_id FROM votes WHERE picture_id = ?";
+    public function getByAlbum(Album $album){
+        $query = "SELECT id, rate, album_id, user_id FROM album_votes WHERE album_id = ?";
 
-        $this->db->query($query, [$picture->getId()]);
+        $this->db->query($query, [$album->getId()]);
 
         $result = $this->db->fetchAll();
         $collection = [];
@@ -81,9 +82,9 @@ class VoteRepository
         {
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new PictureVote(
+            $collection[] = new AlbumVote(
                 $row['rate'],
-                $picture,
+                $album,
                 $user,
                 $row['id']
             );
@@ -94,10 +95,10 @@ class VoteRepository
 
     /**
      * @param $id
-     * @return PictureVote[]
+     * @return AlbumVote[]
      */
     public function getByUser($id){
-        $query = "SELECT id, rate, picture_id, user_id FROM votes WHERE user_id = ?";
+        $query = "SELECT id, rate, album_id, user_id FROM album_votes WHERE user_id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -106,12 +107,12 @@ class VoteRepository
 
         foreach ($result as $row)
         {
-            $picture = PictureRepository::create()->getOne($row['picture_id']);
+            $album = AlbumRepository::create()->getOne($row['album_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new PictureVote(
+            $collection[] = new AlbumVote(
                 $row['rate'],
-                $picture,
+                $album,
                 $user,
                 $row['id']
             );
@@ -121,20 +122,20 @@ class VoteRepository
     }
 
     /**
-     * @param PictureVote $vote
+     * @param AlbumVote $vote
      * @return bool
      */
-    public function save(PictureVote $vote)
+    public function save(AlbumVote $vote)
     {
-        $query = "INSERT INTO votes (rate, picture_id, user_id ) VALUES (?, ?, ?)";
+        $query = "INSERT INTO album_votes (rate, album_id, user_id ) VALUES (?, ?, ?)";
         $params = [
             $vote->getRate(),
-            $vote->getPicture()->getId(),
+            $vote->getAlbum()->getId(),
             $vote->getUser()->getId()
         ];
 
         if ($vote->getId()) {
-            $query = "UPDATE votes SET rate = ?, picture_id = ?, user_id = ? WHERE id = ?";
+            $query = "UPDATE album_votes SET rate = ?, album_id = ?, user_id = ? WHERE id = ?";
             $params[] = $vote->getId();
         }
 
@@ -144,12 +145,12 @@ class VoteRepository
     }
 
     /**
-     * @param PictureVote $vote
+     * @param AlbumVote $vote
      * @return bool
      */
-    public function delete(PictureVote $vote)
+    public function delete(AlbumVote $vote)
     {
-        $query = "DELETE FROM votes WHERE id = ?";
+        $query = "DELETE FROM album_votes WHERE id = ?";
         $params = [ $vote->getId()];
 
         $this->db->query($query, $params);

@@ -42,7 +42,7 @@ class Picture
     private $comments = [];
 
     /**
-     * @var Vote[];
+     * @var PictureVote[];
      */
     private $votes = [];
 
@@ -97,7 +97,7 @@ class Picture
     }
 
     /**
-     * @param \PhotoAlbum\Models\Vote[] $votes
+     * @param \PhotoAlbum\Models\PictureVote[] $votes
      */
     public function setVotes($votes)
     {
@@ -105,7 +105,7 @@ class Picture
     }
 
     /**
-     * @return \PhotoAlbum\Models\Vote[]
+     * @return \PhotoAlbum\Models\PictureVote[]
      */
     public function getVotes()
     {

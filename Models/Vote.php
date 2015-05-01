@@ -7,27 +7,21 @@ class Vote
     /**
      * @var int
      */
-    private $id;
+    protected  $id;
 
     /**
      * @var int
      */
-    private $rate;
-
-    /**
-     * @var Picture
-     */
-    private $picture;
+    protected  $rate;
 
     /**
      * @var User;
      */
-    private $user;
+    protected $user;
 
-    function __construct($rate, $picture, $user, $id = null)
+    protected function __construct($rate, $user, $id = null)
     {
         $this->setRate($rate);
-        $this->setPicture($picture);
         $this->setUser($user);
         $this->setId($id);
     }
@@ -46,22 +40,6 @@ class Vote
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param \PhotoAlbum\Models\Picture $picture
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-    }
-
-    /**
-     * @return \PhotoAlbum\Models\Picture
-     */
-    public function getPicture()
-    {
-        return $this->picture;
     }
 
     /**

@@ -97,6 +97,9 @@ class PictureRepository
             $comments = CommentRepository::create()->getByPicture($picture);
             $picture->setComments($comments);
 
+            $votes = VoteRepository::create()->getByPicture($picture);
+            $picture->setVotes($votes);
+
             $collection[] = $picture;
         }
 
@@ -134,7 +137,7 @@ class PictureRepository
             $comments = CommentRepository::create()->getByPicture($picture);
             $picture->setComments($comments);
 
-            $votes = VoteRepository::create()->getByPicture($row['id']);
+            $votes = VoteRepository::create()->getByPicture($picture);
             $picture->setVotes($votes);
 
             $collection[] = $picture;

@@ -16,5 +16,12 @@
                 <?php endforeach; ?>
         </ul>
         <?php endif; ?>
+        <?php if($picture->getVotes()):  ?>
+            <ul>
+                <?php foreach ($picture->getVotes() as $vote): ?>
+                <li>Rate: <?= $vote->getRate() ?> </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
     <?php endforeach; ?>
 </ul>
