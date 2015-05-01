@@ -62,7 +62,7 @@ class AlbumRepository
             $result['id']
         );
 
-        $pictures = PictureRepository::create()->getByAlbum($result['id']);
+        $pictures = PictureRepository::create()->getByAlbum($album);
         $album->setPictures($pictures);
 
         return $album;
@@ -95,6 +95,9 @@ class AlbumRepository
 
             $pictures = PictureRepository::create()->getByAlbum($album);
             $album->setPictures($pictures);
+
+            $comments = AlbumCommentRepository::create()->getByAlbum($album);
+            $album->setComments($comments);
 
             $collection[] = $album;
         }

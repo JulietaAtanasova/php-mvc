@@ -9,32 +9,26 @@ class Comment
     /**
      * @var int
      */
-    private $id;
+    protected  $id;
 
     /**
      * @var string
      */
-    private $text;
+    protected  $text;
 
     /**
      * @var DateTime
      */
-    private $createdOn;
-
-    /**
-     * @var Picture
-     */
-    private $picture;
+    protected  $createdOn;
 
     /**
      * @var User
      */
-    private $user;
+    protected  $user;
 
-    function __construct($text, $picture, $user, $createdOn = null, $id = null)
+    protected function __construct($text, $user, $createdOn = null, $id = null)
     {
         $this->setCreatedOn($createdOn);
-        $this->setPicture($picture);
         $this->setText($text);
         $this->setUser($user);
         $this->setId($id);
@@ -70,22 +64,6 @@ class Comment
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param \PhotoAlbum\Models\Picture $picture
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-    }
-
-    /**
-     * @return \PhotoAlbum\Models\Picture
-     */
-    public function getPicture()
-    {
-        return $this->picture;
     }
 
     /**

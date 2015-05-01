@@ -94,12 +94,19 @@ class PictureRepository
                 $row['id']
             );
 
+            $comments = CommentRepository::create()->getByPicture($picture);
+            $picture->setComments($comments);
+
             $collection[] = $picture;
         }
 
         return $collection;
     }
 
+    /**
+     * @param Album $album
+     * @return array|bool
+     */
     public function getByAlbum(Album $album)
     {
         $query = "SELECT id, name, album_id, url, created_on, description FROM pictures WHERE album_id = ?";
@@ -124,7 +131,7 @@ class PictureRepository
                 $row['id']
             );
 
-            $comments = CommentRepository::create()->getByPicture($row['id']);
+            $comments = CommentRepository::create()->getByPicture($picture);
             $picture->setComments($comments);
 
             $votes = VoteRepository::create()->getByPicture($row['id']);

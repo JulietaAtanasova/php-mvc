@@ -3,10 +3,10 @@
 namespace PhotoAlbum\Repositories;
 
 use PhotoAlbum\Db;
-use PhotoAlbum\Models\PictureComment;
-use PhotoAlbum\Models\Picture;
+use PhotoAlbum\Models\AlbumComment;
+use PhotoAlbum\Models\Album;
 
-class CommentRepository
+class AlbumCommentRepository
 {
     /**
      * @var \PhotoAlbum\Db
@@ -14,7 +14,7 @@ class CommentRepository
     private $db;
 
     /**
-     * @var CommentRepository
+     * @var AlbumCommentRepository
      */
     private static $inst = null;
 
@@ -24,7 +24,7 @@ class CommentRepository
     }
 
     /**
-     * @return CommentRepository
+     * @return AlbumCommentRepository
      */
     public static function create()
     {
@@ -38,11 +38,11 @@ class CommentRepository
 
     /**
      * @param $id
-     * @return bool|PictureComment
+     * @return bool|AlbumComment
      */
     public function getOne($id)
     {
-        $query = "SELECT id, text, created_on, picture_id, user_id FROM comments WHERE id = ?";
+        $query = "SELECT id, text, created_on, album_id, user_id FROM album_comments WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -52,12 +52,12 @@ class CommentRepository
             return false;
         }
 
-        $picture = PictureRepository::create()->getOne($result['picture_id']);
+        $album = AlbumRepository::create()->getOne($result['album_id']);
         $user = UserRepository::create()->getOne($result['user_id']);
 
-        $comment = new PictureComment(
+        $comment = new AlbumComment(
             $result['text'],
-            $picture,
+            $album,
             $user,
             $result['created_on'],
             $result['id']
@@ -67,13 +67,13 @@ class CommentRepository
     }
 
     /**
-     * @param Picture $picture
-     * @return PictureComment[]
+     * @param Album $album
+     * @return AlbumComment[]
      */
-    public function getByPicture(Picture $picture){
-        $query = "SELECT id, text, created_on, picture_id, user_id FROM comments WHERE picture_id = ?";
+    public function getByAlbum(Album $album){
+        $query = "SELECT id, text, created_on, album_id, user_id FROM album_comments WHERE album_id = ?";
 
-        $this->db->query($query, [$picture->getId()]);
+        $this->db->query($query, [$album->getId()]);
 
         $result = $this->db->fetchAll();
         $collection = [];
@@ -82,9 +82,9 @@ class CommentRepository
         {
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $comment = new PictureComment(
+            $comment = new AlbumComment(
                 $row['text'],
-                $picture,
+                $album,
                 $user,
                 $row['created_on'],
                 $row['id']
@@ -96,8 +96,12 @@ class CommentRepository
         return $collection;
     }
 
+    /**
+     * @param $id
+     * @return AlbumComment[]
+     */
     public function getByUser($id){
-        $query = "SELECT id, text, created_on, picture_id, user_id FROM comments WHERE user_id = ?";
+        $query = "SELECT id, text, created_on, album_id, user_id FROM album_comments WHERE user_id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -106,12 +110,12 @@ class CommentRepository
 
         foreach ($result as $row)
         {
-            $picture = PictureRepository::create()->getOne($row['picture_id']);
+            $album = AlbumRepository::create()->getOne($row['album_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new PictureComment(
+            $collection[] = new AlbumComment(
                 $row['text'],
-                $picture,
+                $album,
                 $user,
                 $row['created_on'],
                 $row['id']
@@ -122,20 +126,20 @@ class CommentRepository
     }
 
     /**
-     * @param PictureComment $comment
+     * @param AlbumComment $comment
      * @return bool
      */
-    public function save(PictureComment $comment)
+    public function save(AlbumComment $comment)
     {
-        $query = "INSERT INTO comments (text, picture_id, user_id ) VALUES (?, ?, ?)";
+        $query = "INSERT INTO album_comments (text, album_id, user_id ) VALUES (?, ?, ?)";
         $params = [
             $comment->getText(),
-            $comment->getPicture()->getId(),
+            $comment->getAlbum()->getId(),
             $comment->getUser()->getId()
         ];
 
         if ($comment->getId()) {
-            $query = "UPDATE comments SET text = ?, picture_id = ?, user_id = ? WHERE id = ?";
+            $query = "UPDATE album_comments SET text = ?, album_id = ?, user_id = ? WHERE id = ?";
             $params[] = $comment->getId();
         }
 
@@ -145,12 +149,12 @@ class CommentRepository
     }
 
     /**
-     * @param PictureComment $comment
+     * @param AlbumComment $comment
      * @return bool
      */
-    public function delete(PictureComment $comment)
+    public function delete(AlbumComment $comment)
     {
-        $query = "DELETE FROM comments WHERE id = ?";
+        $query = "DELETE FROM album_comments WHERE id = ?";
         $params = [ $comment->getId()];
 
         $this->db->query($query, $params);

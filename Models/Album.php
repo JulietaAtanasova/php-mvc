@@ -36,6 +36,11 @@ class Album
      */
     private $pictures;
 
+    /**
+     * @var AlbumComment[];
+     */
+    private $comments = [];
+
     function __construct($name, $category, $user, $description, $id = null)
     {
         $this->setCategory($category);
@@ -43,6 +48,22 @@ class Album
         $this->setName($name);
         $this->setUser($user);
         $this->setId($id);
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\AlbumComment[] $comments
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\AlbumComment[]
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
     /**

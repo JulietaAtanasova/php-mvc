@@ -8,7 +8,6 @@ class PicturesController extends Controller
 {
     public function show()
     {
-        $pictures = PictureRepository::create()->getAll();
         $this->view->pictures = PictureRepository::create()->getAll();
     }
 } 

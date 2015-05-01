@@ -37,7 +37,7 @@ class Picture
     private $album;
 
     /**
-     * @var Comment[]
+     * @var PictureComment[]
      */
     private $comments = [];
 
@@ -81,7 +81,7 @@ class Picture
     }
 
     /**
-     * @param \PhotoAlbum\Models\Comment[] $comments
+     * @param \PhotoAlbum\Models\PictureComment[] $comments
      */
     public function setComments($comments)
     {
@@ -89,7 +89,7 @@ class Picture
     }
 
     /**
-     * @return \PhotoAlbum\Models\Comment[]
+     * @return \PhotoAlbum\Models\PictureComment[]
      */
     public function getComments()
     {
