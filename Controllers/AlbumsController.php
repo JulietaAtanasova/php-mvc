@@ -11,7 +11,6 @@ class AlbumsController extends Controller
 {
     public function show()
     {
-        $categories = AlbumRepository::create()->getAll();
         $this->view->albums = AlbumRepository::create()->getAll();
     }
 

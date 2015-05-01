@@ -31,6 +31,11 @@ class Album
      */
     private $user;
 
+    /**
+     * @var Picture[]
+     */
+    private $pictures;
+
     function __construct($name, $category, $user, $description, $id = null)
     {
         $this->setCategory($category);
@@ -102,6 +107,22 @@ class Album
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\Picture[] $pictures
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\Picture[]
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 
     /**

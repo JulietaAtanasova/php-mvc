@@ -4,6 +4,7 @@ namespace PhotoAlbum\Repositories;
 
 use PhotoAlbum\Db;
 use PhotoAlbum\Models\Picture;
+use PhotoAlbum\Models\Album;
 class PictureRepository
 {
     /**
@@ -99,11 +100,11 @@ class PictureRepository
         return $collection;
     }
 
-    public function getByAlbum($id)
+    public function getByAlbum(Album $album)
     {
         $query = "SELECT id, name, album_id, url, created_on, description FROM pictures WHERE album_id = ?";
 
-        $this->db->query($query, [$id]);
+        $this->db->query($query, [$album->getId()]);
 
         $result = $this->db->fetchAll();
         $collection = [];
@@ -114,8 +115,6 @@ class PictureRepository
 
         foreach ($result as $row)
         {
-            $album = AlbumRepository::create()->getOne($row['album_id']);
-
             $picture = new Picture(
                 $row['name'],
                 $row['url'],
@@ -124,6 +123,12 @@ class PictureRepository
                 $row['created_on'],
                 $row['id']
             );
+
+            $comments = CommentRepository::create()->getByPicture($row['id']);
+            $picture->setComments($comments);
+
+            $votes = VoteRepository::create()->getByPicture($row['id']);
+            $picture->setVotes($votes);
 
             $collection[] = $picture;
         }

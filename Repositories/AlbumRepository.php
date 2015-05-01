@@ -62,6 +62,9 @@ class AlbumRepository
             $result['id']
         );
 
+        $pictures = PictureRepository::create()->getByAlbum($result['id']);
+        $album->setPictures($pictures);
+
         return $album;
     }
 
@@ -82,13 +85,18 @@ class AlbumRepository
             $category = CategoryRepository::create()->getOne($row['category_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new Album(
+            $album = new Album(
                 $row['name'],
                 $category,
                 $user,
                 $row['description'],
                 $row['id']
             );
+
+            $pictures = PictureRepository::create()->getByAlbum($album);
+            $album->setPictures($pictures);
+
+            $collection[] = $album;
         }
 
         return $collection;
@@ -111,13 +119,17 @@ class AlbumRepository
             $category = CategoryRepository::create()->getOne($row['category_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new Album(
+            $album = new Album(
                 $row['name'],
                 $category,
                 $user,
                 $row['description'],
                 $row['id']
             );
+
+            $pictures = PictureRepository::create()->getByAlbum($row['id']);
+            $album->setPictures($pictures);
+            $collection[] = $album;
         }
 
         return $collection;
@@ -140,13 +152,17 @@ class AlbumRepository
             $category = CategoryRepository::create()->getOne($row['category_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
-            $collection[] = new Album(
+            $album = new Album(
                 $row['name'],
                 $category,
                 $user,
                 $row['description'],
                 $row['id']
             );
+
+            $pictures = PictureRepository::create()->getByAlbum($row['id']);
+            $album->setPictures($pictures);
+            $collection[] = $album;
         }
 
         return $collection;
