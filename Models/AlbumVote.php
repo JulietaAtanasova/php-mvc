@@ -2,6 +2,8 @@
 
 namespace PhotoAlbum\Models;
 
+use PhotoAlbum\Repositories\AlbumVoteRepository;
+
 class AlbumVote extends Vote
 {
     /**
@@ -31,6 +33,9 @@ class AlbumVote extends Vote
         return $this->album;
     }
 
-
+    public function save()
+    {
+        return AlbumVoteRepository::create()->save($this);
+    }
 
 } 

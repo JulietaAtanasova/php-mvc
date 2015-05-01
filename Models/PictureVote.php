@@ -2,6 +2,8 @@
 
 namespace PhotoAlbum\Models;
 
+use PhotoAlbum\Repositories\VoteRepository;
+
 class PictureVote extends Vote
 {
     /**
@@ -31,4 +33,8 @@ class PictureVote extends Vote
         return $this->picture;
     }
 
+    public function save()
+    {
+        return VoteRepository::create()->save($this);
+    }
 } 
