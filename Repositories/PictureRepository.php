@@ -34,9 +34,74 @@ class PictureRepository
         return self::$inst;
     }
 
+    /**
+     * @param $id
+     * @return bool|Picture
+     */
+    public function getOne($id)
+    {
+        $query = "SELECT id, name, album_id, url, created_on, description FROM pictures WHERE id = ?";
+
+        $this->db->query($query, [$id]);
+
+        $result = $this->db->row();
+
+        if (empty($result)) {
+            return false;
+        }
+
+        $album = AlbumRepository::create()->getOne($result['album_id']);
+
+        $picture = new Picture(
+            $result['name'],
+            $result['url'],
+            $album,
+            $result['createdOn'],
+            $result['description'],
+            $result['id']
+        );
+
+        return $picture;
+    }
+
+    /**
+     * @return Picture[]
+     */
+    public function getAll()
+    {
+        $query = "SELECT id, name, album_id, url, created_on, description FROM pictures";
+
+        $this->db->query($query);
+
+        $result = $this->db->fetchAll();
+        $collection = [];
+
+        foreach ($result as $row)
+        {
+            $album = AlbumRepository::create()->getOne($row['album_id']);
+
+            $picture = new Picture(
+                $row['name'],
+                $row['url'],
+                $album,
+                $row['description'],
+                $row['created_on'],
+                $row['id']
+            );
+
+            $collection[] = $picture;
+        }
+
+        return $collection;
+    }
+
+    /**
+     * @param Picture $picture
+     * @return bool
+     */
     public function save(Picture $picture)
     {
-        $query = "INSERT INTO albums (name, url, album_id, description) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO pictures (name, url, album_id, description) VALUES (?, ?, ?, ?)";
         $params = [
             $picture->getName(),
             $picture->getUrl(),
@@ -48,6 +113,20 @@ class PictureRepository
             $query = "UPDATE pictures SET name = ?, url = ?, album_id = ?, description = ? WHERE id = ?";
             $params[] = $picture->getId();
         }
+
+        $this->db->query($query, $params);
+
+        return $this->db->rows() > 0;
+    }
+
+    /**
+     * @param Picture $picture
+     * @return bool
+     */
+    public function delete(Picture $picture)
+    {
+        $query = "DELETE FROM albums WHERE id = ?";
+        $params = [ $picture->getId()];
 
         $this->db->query($query, $params);
 

@@ -2,6 +2,8 @@
 
 namespace PhotoAlbum\Models;
 
+use \DateTime;
+
 class Picture
 {
     /**
@@ -25,17 +27,23 @@ class Picture
     private $description;
 
     /**
+     * @var DateTime
+     */
+    private $createdOn;
+
+    /**
      * @var Album
      */
     private $album;
 
-    function __construct($name, $url, $album, $description, $id = null)
+    function __construct($name, $url, $album, $description, $createdOn = null, $id = null)
     {
         $this->setAlbum($album);
         $this->setDescription($description);
         $this->setId($id);
         $this->setName($name);
         $this->setUrl($url);
+        $this->setCreatedOn($createdOn);
     }
 
     /**
@@ -52,6 +60,22 @@ class Picture
     public function getAlbum()
     {
         return $this->album;
+    }
+
+    /**
+     * @param $createdOn
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = date_create($createdOn);
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
     }
 
     /**

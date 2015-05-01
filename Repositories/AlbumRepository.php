@@ -122,6 +122,10 @@ class AlbumRepository
         return $collection;
     }
 
+    /**
+     * @param Album $album
+     * @return bool
+     */
     public function save(Album $album)
     {
         $query = "INSERT INTO albums (name, category_id, user_id, description) VALUES (?, ?, ?, ?)";
@@ -136,6 +140,20 @@ class AlbumRepository
             $query = "UPDATE albums SET name = ?, category_id = ?, user_id = ?, description = ? WHERE id = ?";
             $params[] = $album->getId();
         }
+
+        $this->db->query($query, $params);
+
+        return $this->db->rows() > 0;
+    }
+
+    /**
+     * @param Album $album
+     * @return bool
+     */
+    public function delete(Album $album)
+    {
+        $query = "DELETE FROM albums WHERE id = ?";
+        $params = [ $album->getId()];
 
         $this->db->query($query, $params);
 
