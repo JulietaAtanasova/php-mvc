@@ -3,6 +3,7 @@
 namespace PhotoAlbum\Models;
 
 use \DateTime;
+use PhotoAlbum\Repositories\PictureRepository;
 
 class Picture
 {
@@ -184,4 +185,8 @@ class Picture
         return $this->url;
     }
 
+    public function save()
+    {
+        return PictureRepository::create()->save($this);
+    }
 }

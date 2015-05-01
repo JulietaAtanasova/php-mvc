@@ -1,4 +1,5 @@
 <?php
+
 namespace PhotoAlbum\Controllers;
 
 class Controller

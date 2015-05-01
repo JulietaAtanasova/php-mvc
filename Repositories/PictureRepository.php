@@ -184,6 +184,10 @@ class PictureRepository
         return $this->db->rows() > 0;
     }
 
+    /**
+     * @param Picture $picture
+     * @return float|int
+     */
     public function getRating(Picture $picture)
     {
         $query = "SELECT rate FROM votes WHERE picture_id = ?";
