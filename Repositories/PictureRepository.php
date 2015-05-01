@@ -76,6 +76,42 @@ class PictureRepository
         $result = $this->db->fetchAll();
         $collection = [];
 
+        if (empty($result)) {
+            return false;
+        }
+
+        foreach ($result as $row)
+        {
+            $album = AlbumRepository::create()->getOne($row['album_id']);
+
+            $picture = new Picture(
+                $row['name'],
+                $row['url'],
+                $album,
+                $row['description'],
+                $row['created_on'],
+                $row['id']
+            );
+
+            $collection[] = $picture;
+        }
+
+        return $collection;
+    }
+
+    public function getByAlbum($id)
+    {
+        $query = "SELECT id, name, album_id, url, created_on, description FROM pictures WHERE album_id = ?";
+
+        $this->db->query($query, [$id]);
+
+        $result = $this->db->fetchAll();
+        $collection = [];
+
+        if (empty($result)) {
+            return false;
+        }
+
         foreach ($result as $row)
         {
             $album = AlbumRepository::create()->getOne($row['album_id']);

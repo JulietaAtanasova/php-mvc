@@ -54,7 +54,6 @@ class CategoriesController extends Controller
                     $this->view->error = 'duplicate categories';
                 }
             }
-
         }
     }
 
