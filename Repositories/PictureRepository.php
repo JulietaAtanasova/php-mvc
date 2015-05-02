@@ -57,10 +57,16 @@ class PictureRepository
             $result['name'],
             $result['url'],
             $album,
-            $result['created_on'],
             $result['description'],
+            $result['created_on'],
             $result['id']
         );
+
+        $comments = CommentRepository::create()->getByPicture($picture);
+        $picture->setComments($comments);
+
+        $votes = VoteRepository::create()->getByPicture($picture);
+        $picture->setVotes($votes);
 
         return $picture;
     }

@@ -2,7 +2,6 @@
 
 namespace PhotoAlbum\Models;
 
-use \DateTime;
 use PhotoAlbum\Repositories\PictureRepository;
 
 class Picture
@@ -28,7 +27,7 @@ class Picture
     private $description;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     private $createdOn;
 
@@ -114,7 +113,7 @@ class Picture
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedOn()
     {

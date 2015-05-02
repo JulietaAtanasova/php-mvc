@@ -2,17 +2,35 @@
 
 namespace PhotoAlbum\Controllers;
 
+use PhotoAlbum\Models\Album;
+use PhotoAlbum\Models\Category;
 use PhotoAlbum\Models\Picture;
 use PhotoAlbum\Models\PictureComment;
+use PhotoAlbum\Models\PictureVote;
 use PhotoAlbum\Repositories\AlbumRepository;
 use PhotoAlbum\Repositories\PictureRepository;
 use PhotoAlbum\Repositories\UserRepository;
+use PhotoAlbum\Repositories\VoteRepository;
 
 class PicturesController extends HomeController
 {
-    public function show()
+    public function showAll()
     {
         $this->view->pictures = PictureRepository::create()->getAll();
+    }
+
+    public function show()
+    {
+        $this->view->error = false;
+        $params = $this->request->getParams();
+        $picture = PictureRepository::create()->getOne($params['picture']);
+        if(!$picture){
+            $this->view->error = 'No such picture';
+            $this->view->rating = "";
+            return;
+        }
+        $this->view->picture = $picture;
+        $this->view->rating = PictureRepository::create()->getRating($picture);
     }
 
     public function add()
@@ -67,6 +85,8 @@ class PicturesController extends HomeController
                 $this->view->error = 'duplicate picture';
             }
 
+            $this->redirect('albums', 'show', ['album' => $album->getId()] );
+
         }
     }
 
@@ -96,6 +116,63 @@ class PicturesController extends HomeController
             if (!$comment->save()) {
                 $this->view->error = 'duplicate comment';
             }
+
+            $this->redirect('pictures', 'show', ['picture' => $picture->getId()] );
+
+        }
+    }
+
+    public function addVote()
+    {
+        $this->view->error = false;
+        $params = $this->request->getParams();
+        $picture = PictureRepository::create()->getOne($params['picture']);
+        if(!$picture){
+            $this->view->error = 'No such $picture.';
+            $this->view->album = "";
+            return;
+        }
+
+        $this->view->picture = $picture->getName();
+
+        if (isset($_POST['vote'])) {
+            $text = $_POST['rate'];
+            if($text === ""){
+                $this->view->error = 'empty rate';
+                return;
+            }
+
+            if(!(float)$text){
+                $this->view->error = 'invalid rate value';
+                return;
+            }
+
+            if(!(floor((float)$text) == (float)$text)) {
+                $this->view->error = 'rate must be integer number';
+                return;
+            }
+            $rate = (int)$text;
+            if($rate < 1 || $rate > 10){
+                $this->view->error = 'rate must be between 1 and 10';
+                return;
+            }
+
+            $votes = VoteRepository::create()->getByPicture($picture);
+            foreach($votes as $vote) {
+                if($vote->getUser()->getId() == $_SESSION['userid']){
+                    $this->view->error = 'you are already vote for this album';
+                    return;
+                }
+            }
+
+            $user = UserRepository::create()->getOne($_SESSION['userid']);
+
+            $vote = new PictureVote($rate, $picture, $user);
+            if (!$vote->save()) {
+                $this->view->error = 'duplicate vote';
+            }
+
+            $this->redirect('pictures', 'show', ['picture' => $picture->getId()] );
         }
     }
 } 

@@ -20,11 +20,11 @@ class AlbumsController extends HomeController
     public function show()
     {
         $this->view->error = false;
+        $this->view->isOwner = false;
         $params = $this->request->getParams();
         $album = AlbumRepository::create()->getOne($params['album']);
         if(!$album){
             $this->view->error = 'No such album.';
-            $this->view->name = "";
             $this->view->name = "";
             $this->view->category = "";
             $this->view->user = "";
@@ -32,9 +32,15 @@ class AlbumsController extends HomeController
             $this->view->comments = "";
             $this->view->description = "";
             $this->view->rating = "";
+            $this->view->createdOn = "";
             return;
         }
 
+        if($album->getUser()->getId() == $_SESSION['userid']){
+            $this->view->isOwner = true;
+        }
+
+        $this->view->album = $album;
         $this->view->name = $album->getName();
         $this->view->category = $album->getCategory()->getName();
         $this->view->user = $album->getUser()->getUsername();
@@ -42,6 +48,8 @@ class AlbumsController extends HomeController
         $this->view->comments = $album->getComments();
         $this->view->description = $album->getDescription();
         $this->view->rating = AlbumRepository::create()->getRating($album);
+        $this->view->createdOn = $album->getCreatedOn();
+
     }
 
     public function add()
@@ -154,6 +162,8 @@ class AlbumsController extends HomeController
             if (!$comment->save()) {
                 $this->view->error = 'duplicate comment';
             }
+
+            $this->redirect('albums', 'show', ['album' => $album->getId()] );
         }
     }
 
@@ -206,6 +216,9 @@ class AlbumsController extends HomeController
             if (!$vote->save()) {
                 $this->view->error = 'duplicate vote';
             }
+
+            $this->redirect('albums', 'show', ['album' => $album->getId()] );
+
         }
     }
 } 

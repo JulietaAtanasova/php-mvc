@@ -52,7 +52,6 @@ class AlbumVoteRepository
             return false;
         }
 
-
         $album = AlbumRepository::create()->getOne($result['album_id']);
         $user = UserRepository::create()->getOne($result['user_id']);
 

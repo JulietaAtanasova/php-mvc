@@ -26,12 +26,11 @@ class HomeController extends Controller
         }
 
         if ($this->isAdmin()) {
-            //$this->view->adminMessage = "ADMIN  SAM";
+            //$this->view->adminMessage = "YOU ARE THE ADMIN HERE";
         }
 
         $this->view->partial('header');
         $this->view->partial('navigation');
-
 
     }
 

@@ -16,9 +16,15 @@ class View
         }
 
         $this->actionName = $actionName;
-        $requestUri = str_replace($controllerName, "", $_SERVER['REQUEST_URI']);
-        $requestUri = str_replace($actionName, "", $requestUri);
-        $host = "//" . $_SERVER['HTTP_HOST'] . $requestUri;
+        $requestUri = explode("/", $_SERVER['REQUEST_URI']);
+        $root = "";
+        foreach ($requestUri as $uri) {
+            if ($uri == $controllerName || $uri == $actionName) {
+                break;
+            }
+            $root .= $uri . "/";
+        }
+        $host = "//" . $_SERVER['HTTP_HOST'] . $root;
         $this->root = $host;
     }
 

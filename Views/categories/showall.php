@@ -10,7 +10,7 @@
                 <?php foreach ($this->categories as $category): ?>
                 <li class="list-group-item">
                     <span class="badge"><?= count($category->getAlbums()); ?></span>
-                    <a href="<?= '/picturealbum/categories/show/name/' . $category->getName() ?>" >
+                    <a href="<?= '/photoalbum/categories/show/name/' . $category->getName() ?>" >
                         <?= $category->getName(); ?>
                     </a>
                 </li>

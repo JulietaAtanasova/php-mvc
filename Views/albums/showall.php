@@ -1,35 +1,53 @@
 <?php /** @var \PhotoAlbum\Models\Album $album*/ ?>
-<ul>
-    <?php foreach ($this->albums as $album):  ?>
-        <li>Album: <?= $album->getName(); ?>,
-            Category: <?= $album->getCategory()->getName(); ?>,
-            User: <?= $album->getUser()->getUsername();?></li>
-        <?php if($album->getComments()): ?>
-            <ul>
-                <?php foreach ($album->getComments() as $comment): ?>
-                <li>Comment text: <?= $comment->getText(); ?>,
-                    User: <?= $comment->getUser()->getUsername(); ?>,
-                    Created On: <?= date_format($comment->getCreatedOn(), 'j-F-Y'); ?>
-                    <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-        <?php if($album->getVotes()): ?>
+
+<main>
+    <h1 id="section-rating-albums" class="text-center">All albums</h1>
+    <div class="col-md-12 albums-container">
+    </div>
+</main>
+<div>
+    <?php foreach ($this->albums as $album): ?>
+        <div class="row col-md-12 album-container">
+            <div class="col-md-3">
+                <h3 class="album-title">
+                    <a href="<?= '/photoalbum/albums/show/album/'. $album->getId(); ?>"><?= $album->getName(); ?></a>
+                </h3>
+            </div>
+            <div class="col-md-3">
+                <h3 class="album-title">
+                    <a href="<?= '/photoalbum/categories/show/name/'. $album->getCategory()->getName(); ?>"> Category: <?= $album->getCategory()->getName(); ?></a>
+                </h3>
+            </div>
+            <?php if($album->getPictures()): ?>
                 <ul>
-                <?php foreach ($album->getVotes() as $vote): ?>
-                        <li>Rate: <?= $vote->getRate() ?> </li>
-                <?php endforeach; ?>
+                    <?php foreach ($album->getPictures() as $picture): ?>
+                        <div class="col-md-3">
+                            <h3 class="album-title"></h3>
+                        </div>
+                        <div class="col-md-3">
+                            <img class="img-responsive" src="<?= $picture->getUrl(); ?>" alt="picture">
+                        </div>
+                        <?php break; ?>
+                    <?php endforeach; ?>
                 </ul>
-        <?php endif; ?>
-        <?php if($album->getPictures()): ?>
-        <ul>
-            <?php foreach ($album->getPictures() as $picture): ?>
-                <li>Picture name: <?= $picture->getName(); ?>,
-                    Url: <?= $picture->getUrl() ?>,
-                    Description: <?= $picture->getDescription(); ?>,
-                    Created On: <?= date_format($picture->getCreatedOn(), 'j-F-Y'); ?>
-            <?php endforeach; ?>
-        </ul>
-        <?php endif; ?>
+            <?php else: ?>
+                <div class="col-md-3">
+                    <img class="img-responsive" src="http://placehold.it/400x300&text=No%20image" alt="picture">
+                </div>
+            <?php endif; ?>
+            <div class="col-md-3">
+                <span>
+                    <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addvote/album/'. $album->getId();?>">
+                        Vote
+                    </a>
+                </span>
+                <span>
+                    <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addcomment/album/'. $album->getId();?>">
+                        Comment
+                    </a>
+                </span>
+            </div>
+        </div>
     <?php endforeach; ?>
-</ul>
+</div>
 

@@ -32,6 +32,11 @@ class Album
     private $user;
 
     /**
+     * @var \DateTime
+     */
+    private $createdOn;
+
+    /**
      * @var Picture[]
      */
     private $pictures;
@@ -46,13 +51,14 @@ class Album
      */
     private $votes;
 
-    function __construct($name, $category, $user, $description, $id = null)
+    function __construct($name, $category, $user, $description, $id = null, $createdOn = null)
     {
         $this->setCategory($category);
         $this->setDescription($description);
         $this->setName($name);
         $this->setUser($user);
         $this->setId($id);
+        $this->setCreatedOn($createdOn);
     }
 
     /**
@@ -69,6 +75,22 @@ class Album
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * @param \DateTime $createdOn
+     */
+    public function setCreatedOn($createdOn)
+    {
+        $this->createdOn = $createdOn;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedOn()
+    {
+        return $this->createdOn;
     }
 
     /**

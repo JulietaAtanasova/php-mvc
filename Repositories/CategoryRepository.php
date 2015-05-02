@@ -73,11 +73,14 @@ class CategoryRepository
 
         $user = UserRepository::create()->getOne($result['user_id']);
 
-        $category = new Category(
+        $category= new Category(
             $result['name'],
             $user,
             $result['id']
         );
+
+        $albums = AlbumRepository::create()->getByCategory($category);
+        $category->setAlbums($albums);
 
         return $category;
     }

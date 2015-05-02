@@ -16,6 +16,9 @@ class CategoriesController extends HomeController
 
     public function show()
     {
+        $this->view->error = false;
+        $this->view->category = "";
+        $this->view->albums = [];
         $params = $this->request->getParams();
         $category = CategoryRepository::create()->getOneByName($params['name']);
         if(!$category){
@@ -26,7 +29,6 @@ class CategoriesController extends HomeController
 
         $this->view->category = $category->getName();
         $this->view->albums = $category->getAlbums();
-
     }
 
     public function add()

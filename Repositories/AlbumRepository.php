@@ -42,7 +42,7 @@ class AlbumRepository
      */
     public function getOne($id)
     {
-        $query = "SELECT id, name, description, category_id, user_id FROM albums WHERE id = ?";
+        $query = "SELECT id, name, description, category_id, user_id, created_on FROM albums WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -60,7 +60,8 @@ class AlbumRepository
             $category,
             $user,
             $result['description'],
-            $result['id']
+            $result['id'],
+            $result['created_on']
         );
 
         $pictures = PictureRepository::create()->getByAlbum($album);
