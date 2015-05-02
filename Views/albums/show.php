@@ -21,6 +21,18 @@
                     </a>
                 </span>
             <?php endif; ?>
+            <?php if($this->isAdmin): ?>
+                <span>
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'edit', ['album' => $this->album->getId()])?>">
+                        Edit album
+                    </a>
+                </span>
+                <span>
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'delete', ['album' => $this->album->getId()])?>">
+                        Delete album
+                    </a>
+                </span>
+            <?php endif; ?>
         </h1>
         <a href="<?= '/photoalbum/categories/show/name/'. $this->category ?>"> Category: <?= $this->category ?></a>
         <?php if($this->description): ?>

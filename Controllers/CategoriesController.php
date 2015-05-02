@@ -11,6 +11,7 @@ class CategoriesController extends HomeController
     public function showAll()
     {
         $categories = CategoryRepository::create()->getAll();
+        $this->view->isAdmin = $this->isAdmin();
         $this->view->categories = CategoryRepository::create()->getAll();
     }
 
@@ -34,6 +35,11 @@ class CategoriesController extends HomeController
     public function add()
     {
         $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
+
         if (isset($_POST['create'])) {
             $name = $_POST['name'];
 
@@ -43,12 +49,18 @@ class CategoriesController extends HomeController
             if (!$category->save()) {
                 $this->view->error = 'duplicate categories';
             }
+            $this->redirect('categories', 'showall');
         }
+
     }
 
     public function edit()
     {
         $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
 
         $params = $this->request->getParams();
         $category = CategoryRepository::create()->getOneByName($params['name']);
@@ -69,12 +81,18 @@ class CategoriesController extends HomeController
                     $this->view->error = 'duplicate categories';
                 }
             }
+            $this->redirect('categories', 'showall');
         }
+
     }
 
     public function delete()
     {
         $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
 
         $params = $this->request->getParams();
         $category = CategoryRepository::create()->getOneByName($params['name']);
@@ -88,6 +106,8 @@ class CategoriesController extends HomeController
 
         if (isset($_POST['delete'])) {
             CategoryRepository::create()->delete($category);
+            $this->redirect('categories', 'showall');
         }
+
     }
 } 

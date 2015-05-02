@@ -2,6 +2,7 @@
 
 namespace PhotoAlbum\Controllers;
 
+use PhotoAlbum\Repositories\CategoryRepository;
 use PhotoAlbum\Repositories\UserRepository;
 use PhotoAlbum\Repositories\AlbumRepository;
 
@@ -66,4 +67,34 @@ class HomeController extends Controller
         $this->view->albums = $topAlbums;
     }
 
+    public function search()
+    {
+        $this->view->error = false;
+        if(isset($_POST['search'])){
+            $text = ($_POST['text']);
+            if($text === ""){
+                $this->view->error = 'empty comment text';
+                return;
+            }
+
+            $allCategories = CategoryRepository::create()->getAll();
+            $categories = [];
+            foreach($allCategories as $category){
+                if(strpos($category->getName(), $text) !== false){
+                    $categories[] = $category;
+                }
+            }
+
+            $allAlbums = AlbumRepository::create()->getAll();
+            $albums = [];
+            foreach($allAlbums as $album){
+                if(strpos($album->getName(), $text) !== false){
+                    $albums[] = $album;
+                }
+            }
+
+            $this->view->categories = $categories;
+            $this->view->albums = $albums;
+        }
+    }
 } 

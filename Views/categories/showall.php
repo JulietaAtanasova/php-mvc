@@ -12,6 +12,23 @@
                     <span class="badge"><?= count($category->getAlbums()); ?></span>
                     <a href="<?= '/photoalbum/categories/show/name/' . $category->getName() ?>" >
                         <?= $category->getName(); ?>
+                        <?php if($this->isAdmin): ?>
+                            <span>
+                                <a class="btn btn-primary btn-m" href="<?= $this->url('categories', 'add')?>">
+                                    Add
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-primary btn-m" href="<?= $this->url('categories', 'edit', ['name' => $category->getName()])?>">
+                                    Edit
+                                </a>
+                            </span>
+                            <span>
+                                <a class="btn btn-primary btn-m" href="<?= $this->url('categories', 'delete', ['name' => $category->getName()])?>">
+                                    Delete
+                                </a>
+                            </span>
+                        <?php endif; ?>
                     </a>
                 </li>
                 <?php endforeach; ?>

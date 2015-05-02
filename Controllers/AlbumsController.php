@@ -40,6 +40,7 @@ class AlbumsController extends HomeController
             $this->view->isOwner = true;
         }
 
+        $this->view->isAdmin = $this->isAdmin();
         $this->view->album = $album;
         $this->view->name = $album->getName();
         $this->view->category = $album->getCategory()->getName();
@@ -82,6 +83,11 @@ class AlbumsController extends HomeController
     public function edit()
     {
         $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
+
         $params = $this->request->getParams();
         $album = AlbumRepository::create()->getOne($params['album']);
         if(!$album){
@@ -121,6 +127,11 @@ class AlbumsController extends HomeController
     public function delete()
     {
         $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
+
         $params = $this->request->getParams();
         $album = AlbumRepository::create()->getOne($params['album']);
         if(!$album){
