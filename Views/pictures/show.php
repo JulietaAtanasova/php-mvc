@@ -27,6 +27,18 @@
                 Comment
             </a>
         </span>
+        <?php if($this->isAdmin): ?>
+            <span>
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('pictures', 'edit', ['picture' => $this->picture->getId()])?>">
+                        Edit
+                    </a>
+                </span>
+            <span>
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('pictures', 'delete', ['picture' => $this->picture->getId()])?>">
+                        Delete
+                    </a>
+                </span>
+        <?php endif; ?>
     </div>
 </div>
 

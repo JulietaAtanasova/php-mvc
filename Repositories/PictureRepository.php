@@ -182,7 +182,7 @@ class PictureRepository
      */
     public function delete(Picture $picture)
     {
-        $query = "DELETE FROM albums WHERE id = ?";
+        $query = "DELETE FROM pictures WHERE id = ?";
         $params = [ $picture->getId()];
 
         $this->db->query($query, $params);

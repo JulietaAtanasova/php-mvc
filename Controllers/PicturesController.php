@@ -2,8 +2,6 @@
 
 namespace PhotoAlbum\Controllers;
 
-use PhotoAlbum\Models\Album;
-use PhotoAlbum\Models\Category;
 use PhotoAlbum\Models\Picture;
 use PhotoAlbum\Models\PictureComment;
 use PhotoAlbum\Models\PictureVote;
@@ -22,6 +20,7 @@ class PicturesController extends HomeController
     public function show()
     {
         $this->view->error = false;
+        $this->view->isAdmin = $this->isAdmin();
         $params = $this->request->getParams();
         $picture = PictureRepository::create()->getOne($params['picture']);
         if(!$picture){
@@ -88,6 +87,50 @@ class PicturesController extends HomeController
             $this->redirect('albums', 'show', ['album' => $album->getId()] );
 
         }
+    }
+
+    public function edit()
+    {
+        $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
+
+        $params = $this->request->getParams();
+        $picture = PictureRepository::create()->getOne($params['picture']);
+        if(!$picture){
+            $this->view->error = 'No such picture.';
+            $this->view->picture = "";
+            $this->view->description = "";
+            $this->view->url = "";
+            return;
+        }
+
+        $this->view->picture = $picture->getName();
+        $this->view->description = $picture->getDescription();
+        $this->view->url = $picture->getUrl();
+
+        if (isset($_POST['edit'])) {
+            $description = $_POST['description'];
+            $url = $_POST['url'];
+            $name = $_POST['name'];
+            if($name === ""){
+                $this->view->error = 'empty picture name';
+                return;
+            }
+
+            $picture->setName($name);
+            $picture->setDescription($description);
+            $picture->setUrl($url);
+
+            if (!$picture->save()) {
+                $this->view->error = 'duplicate pictures';
+            }
+
+            $this->redirect('pictures', 'show', ['picture' => $picture->getId()]);
+        }
+
     }
 
     public function addComment()
@@ -174,5 +217,31 @@ class PicturesController extends HomeController
 
             $this->redirect('pictures', 'show', ['picture' => $picture->getId()] );
         }
+    }
+
+    public function delete()
+    {
+        $this->view->error = false;
+        $user = UserRepository::create()->getOne($_SESSION['userid']);
+        if(!$user->isAdmin()){
+            $this->view->error = 'You are not authorized!';
+        }
+
+        $params = $this->request->getParams();
+        $picture = PictureRepository::create()->getOne($params['picture']);
+        if(!$picture){
+            $this->view->error = 'No such album.';
+            $this->view->name = "";
+            return;
+        }
+
+        $this->view->name = $picture->getName();
+        $albumId = $picture->getAlbum()->getId();
+        if (isset($_POST['delete'])) {
+            PictureRepository::create()->delete($picture);
+
+            $this->redirect('albums', 'show', ['album' => $albumId]);
+        }
+
     }
 } 
