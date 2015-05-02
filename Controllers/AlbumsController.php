@@ -44,28 +44,6 @@ class AlbumsController extends HomeController
         $this->view->rating = AlbumRepository::create()->getRating($album);
     }
 
-    public function showTopAlbums()
-    {
-        $albums = AlbumRepository::create()->getAll();
-        $ratings = [];
-        foreach($albums as $album) {
-            $rating = AlbumRepository::create()->getRating($album);
-            $ratings[$album->getId()] = $rating;
-        }
-
-        arsort($ratings);
-        $topRatings = array_slice($ratings, 0, 3);
-        $topAlbums = [];
-        foreach($albums as $album) {
-            $r = AlbumRepository::create()->getRating($album);
-            if (in_array($r, $topRatings)){
-                $topAlbums[] = $album;
-            }
-        }
-
-        $this->view->albums = $topAlbums;
-    }
-
     public function add()
     {
         $this->view->error = false;

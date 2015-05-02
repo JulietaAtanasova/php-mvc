@@ -58,12 +58,41 @@ class UserRepository
         return $this->getOne($result['id']);
     }
 
-
+    /**
+     * @param $id
+     * @return bool|User
+     */
     public function getOne($id)
     {
         $query = "SELECT id, username, password, is_admin FROM users WHERE id = ?";
 
         $this->db->query($query, [$id]);
+
+        $result = $this->db->row();
+
+        if (empty($result)) {
+            return false;
+        }
+
+        $user = new User(
+            $result['username'],
+            $result['password'],
+            $result['id'],
+            $result['is_admin']
+        );
+
+        return $user;
+    }
+
+    /**
+     * @param $name
+     * @return bool|User
+     */
+    public function getOneByName($name)
+    {
+        $query = "SELECT id, username, password, is_admin FROM users WHERE username = ?";
+
+        $this->db->query($query, [$name]);
 
         $result = $this->db->row();
 

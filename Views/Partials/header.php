@@ -13,6 +13,12 @@
         <span>
             <a class="btn btn-primary btn-m" href="<?= $this->url('users', $this->buttonAction);?>"><?= $this->button; ?></a>
         </span>
+
+        <?php if($this->canRegister): ?>
+        <span>
+            <a class="btn btn-primary btn-m" href="<?= $this->url('users', 'register');?>">Register</a>
+        </span>
+        <?php endif; ?>
     </h4>
 
 </div>

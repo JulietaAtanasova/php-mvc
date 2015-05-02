@@ -18,14 +18,14 @@
             </td>
         </tr>
         <?php if($this->error): ?>
-            <tr>
-                <td>Error</td>
-                <td>
-                    <font color="red">
-                        <?= $this->error; ?>
-                    </font>
-                </td>
-            </tr>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Error</h3>
+                </div>
+                <div class="panel-body">
+                    <?= $this->error; ?>
+                </div>
+            </div>
         <?php endif; ?>
     </table>
 </form>

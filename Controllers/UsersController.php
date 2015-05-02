@@ -44,9 +44,10 @@ class UsersController extends HomeController
 
             if (!$user->save()) {
                 $this->view->error = 'duplicate users';
+                return;
             }
 
-            $this->login();
+            $this->redirect('users/login');
         }
     }
 
