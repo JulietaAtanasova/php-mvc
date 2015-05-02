@@ -11,8 +11,8 @@ class UsersController extends HomeController
         $this->view->error = false;
         $this->view->user = false;
         if (isset($_POST['login'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = htmlspecialchars($_POST['username']);
+            $password = htmlspecialchars($_POST['password']);
 
             $user = UserRepository::create()->getOneByDetails(
                 $username,
@@ -37,8 +37,8 @@ class UsersController extends HomeController
     {
         $this->view->error = false;
         if (isset($_POST['register'])) {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
+            $username = htmlspecialchars($_POST['username']);
+            $password = htmlspecialchars($_POST['password']);
 
             $user = new User($username, $password);
 
