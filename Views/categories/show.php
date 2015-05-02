@@ -38,12 +38,12 @@
             <?php endif; ?>
             <div class="col-md-3">
                 <span>
-                    <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addvote/album/'. $album->getId();?>">
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'addvote', ['album'=> $album->getId()]);?>">
                         Vote
                     </a>
                 </span>
                 <span>
-                    <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addcomment/album/'. $album->getId();?>">
+                    <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'addcomment', ['album'=> $album->getId()]);?>">
                         Comment
                     </a>
                 </span>

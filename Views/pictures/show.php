@@ -18,12 +18,12 @@
     <p>Rating: <?= round($this->rating, 2); ?></p>
     <div class="container">
         <span>
-            <a class="btn btn-primary btn-m" href="<?= '/photoalbum/pictures/addvote/picture/'. $this->picture->getId();?>">
+            <a class="btn btn-primary btn-m" href="<?= $this->url('pictures', 'addvote', ['picture' => $this->picture->getId()]);?>">
                 Vote
             </a>
         </span>
         <span>
-            <a class="btn btn-primary btn-m" href="<?= '/photoalbum/pictures/addcomment/picture/'. $this->picture->getId();?>">
+            <a class="btn btn-primary btn-m" href="<?= $this->url('pictures', 'addcomment', ['picture' => $this->picture->getId()]); ?>">
                 Comment
             </a>
         </span>

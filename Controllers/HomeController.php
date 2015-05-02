@@ -70,7 +70,9 @@ class HomeController extends Controller
     public function search()
     {
         $this->view->error = false;
+        $this->view->isSearching = false;
         if(isset($_POST['search'])){
+            $this->view->isSearching = true;
             $text = ($_POST['text']);
             if($text === ""){
                 $this->view->error = 'empty comment text';

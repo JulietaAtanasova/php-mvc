@@ -153,7 +153,12 @@ class PicturesController extends HomeController
                 return;
             }
 
-            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if($this->isLogged()){
+                $user = UserRepository::create()->getOne($_SESSION['userid']);
+            } else{
+                $this->view->error = "you are not logged in.";
+                return;
+            }
 
             $comment = new PictureComment($text, $picture, $user);
             if (!$comment->save()) {
@@ -208,7 +213,12 @@ class PicturesController extends HomeController
                 }
             }
 
-            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if($this->isLogged()){
+                $user = UserRepository::create()->getOne($_SESSION['userid']);
+            } else{
+                $this->view->error = "you are not logged in.";
+                return;
+            }
 
             $vote = new PictureVote($rate, $picture, $user);
             if (!$vote->save()) {

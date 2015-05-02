@@ -36,8 +36,10 @@ class AlbumsController extends HomeController
             return;
         }
 
-        if($album->getUser()->getId() == $_SESSION['userid']){
-            $this->view->isOwner = true;
+        if($this->isLogged()){
+            if($album->getUser()->getId() == $_SESSION['userid']){
+                $this->view->isOwner = true;
+            }
         }
 
         $this->view->isAdmin = $this->isAdmin();
@@ -65,7 +67,13 @@ class AlbumsController extends HomeController
 
             $description = $_POST['description'];
 
-            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if($this->isLogged()){
+                $user = UserRepository::create()->getOne($_SESSION['userid']);
+            } else {
+                $this->view->error = 'You are not logged in';
+                return;
+            }
+
             $category = CategoryRepository::create()->getOneByName($_POST['categoryName']);
             if(!$category){
                 $this->view->error = 'No such category';
@@ -83,9 +91,14 @@ class AlbumsController extends HomeController
     public function edit()
     {
         $this->view->error = false;
-        $user = UserRepository::create()->getOne($_SESSION['userid']);
-        if(!$user->isAdmin()){
-            $this->view->error = 'You are not authorized!';
+        if($this->isLogged()){
+            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if(!$user->isAdmin()){
+                $this->view->error = 'You are not authorized!';
+            }
+        } else {
+            $this->view->error = 'You are not logged in';
+            return;
         }
 
         $params = $this->request->getParams();
@@ -127,9 +140,14 @@ class AlbumsController extends HomeController
     public function delete()
     {
         $this->view->error = false;
-        $user = UserRepository::create()->getOne($_SESSION['userid']);
-        if(!$user->isAdmin()){
-            $this->view->error = 'You are not authorized!';
+        if($this->isLogged()){
+            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if(!$user->isAdmin()){
+                $this->view->error = 'You are not authorized!';
+            }
+        } else {
+            $this->view->error = 'You are not logged in';
+            return;
         }
 
         $params = $this->request->getParams();
@@ -167,7 +185,12 @@ class AlbumsController extends HomeController
                 return;
             }
 
-            $user = UserRepository::create()->getOne($_SESSION['userid']);
+            if($this->isLogged()) {
+                $user = UserRepository::create()->getOne($_SESSION['userid']);
+            } else {
+                $this->view->error = 'You are not logged in';
+                return;
+            }
 
             $comment = new AlbumComment($text, $album, $user);
             if (!$comment->save()) {
@@ -192,6 +215,13 @@ class AlbumsController extends HomeController
         $this->view->album = $album->getName();
 
         if (isset($_POST['vote'])) {
+            if($this->isLogged()) {
+                $user = UserRepository::create()->getOne($_SESSION['userid']);
+            } else {
+                $this->view->error = 'You are not logged in';
+                return;
+            }
+
             $text = $_POST['rate'];
             if($text === ""){
                 $this->view->error = 'empty rate';
@@ -220,8 +250,6 @@ class AlbumsController extends HomeController
                     return;
                 }
             }
-
-            $user = UserRepository::create()->getOne($_SESSION['userid']);
 
             $vote = new AlbumVote($rate, $album, $user);
             if (!$vote->save()) {

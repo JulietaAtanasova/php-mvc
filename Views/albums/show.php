@@ -67,12 +67,12 @@
     <p>Rating: <?= round($this->rating, 2) ?></p>
     <div class="col-md-3">
         <span>
-            <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addvote/album/'. $this->album->getId();?>">
+            <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'addvote', [ 'album' => $this->album->getId()]); ?>">
                 Vote
             </a>
         </span>
         <span>
-            <a class="btn btn-primary btn-m" href="<?= '/photoalbum/albums/addcomment/album/'. $this->album->getId();?>">
+            <a class="btn btn-primary btn-m" href="<?= $this->url('albums', 'addcomment', [ 'album' => $this->album->getId()]); ?>">
                 Comment
             </a>
         </span>

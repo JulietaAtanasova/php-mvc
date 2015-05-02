@@ -5,12 +5,17 @@
                 <legend>Search</legend>
                 <div class="control-group">
                     <div class="col-lg-10 controls">
-                        <input class="form-control" id="inputUserName" required="" type="text" name="text">
+                        <input class="form-control"
+                               id="inputUserName"
+                               required=""
+                               type="text"
+                               name="text"
+                               placeholder="Search in categories and album">
                         <p class="help-block"></p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-lg-10 col-lg-offset-2">
+                    <div class="col-lg-10">
                         <input type="submit" name="search" value="Search">
                     </div>
                 </div>
@@ -28,7 +33,7 @@
         </form>
     </div>
 
-    <?php if(isset($_POST['search'])): ?>
+    <?php if($this->isSearching): ?>
     <div class="row">
         <div class="col-lg-4">
             <div class="bs-component">
