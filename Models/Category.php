@@ -20,6 +20,11 @@ class Category
     private $user;
 
     /**
+     * @var Album[]
+     */
+    private $albums = [];
+
+    /**
      * @param $id
      * @param $name
      * @param User $user
@@ -29,6 +34,22 @@ class Category
         $this->setId($id);
         $this->setName($name);
         $this->setUser($user);
+    }
+
+    /**
+     * @param \PhotoAlbum\Models\Album[] $albums
+     */
+    public function setAlbums($albums)
+    {
+        $this->albums = $albums;
+    }
+
+    /**
+     * @return \PhotoAlbum\Models\Album[]
+     */
+    public function getAlbums()
+    {
+        return $this->albums;
     }
 
     /**

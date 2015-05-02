@@ -20,9 +20,9 @@
 <ul>
     <?php foreach ($this->pictures as $picture): ?>
         <li>Picture name: <?= $picture->getName(); ?>,
-            Url: <?= $picture->getUrl() ?>,
             Description: <?= $picture->getDescription(); ?>,
             Created On: <?= date_format($picture->getCreatedOn(), 'j-F-Y'); ?>
+        <img src="<?= $picture->getUrl() ?>" alt="picture">
     <?php endforeach; ?>
 </ul>
 <?php endif; ?>
@@ -33,3 +33,20 @@
         </font>
     </p>
 <?php endif; ?>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header"><?= $this->name ?></h1>
+    </div>
+
+    <?php if($this->pictures): ?>
+        <?php foreach ($this->pictures as $picture): ?>
+            <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                <h4><?= $picture->getName(); ?></h4>
+                <a class="thumbnail" href="">
+                    <img class="img-responsive" src="<?= $picture->getUrl() ?>" alt="picture">
+                </a>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>

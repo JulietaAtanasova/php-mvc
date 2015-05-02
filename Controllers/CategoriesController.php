@@ -6,12 +6,27 @@ use PhotoAlbum\Models\Category;
 use PhotoAlbum\Repositories\CategoryRepository;
 use PhotoAlbum\Repositories\UserRepository;
 
-class CategoriesController extends Controller
+class CategoriesController extends HomeController
 {
-    public function show()
+    public function showAll()
     {
         $categories = CategoryRepository::create()->getAll();
         $this->view->categories = CategoryRepository::create()->getAll();
+    }
+
+    public function show()
+    {
+        $params = $this->request->getParams();
+        $category = CategoryRepository::create()->getOneByName($params['name']);
+        if(!$category){
+            $this->view->error = 'No such category.';
+            $this->view->category = "";
+            return;
+        }
+
+        $this->view->category = $category->getName();
+        $this->view->albums = $category->getAlbums();
+
     }
 
     public function add()
@@ -26,8 +41,6 @@ class CategoriesController extends Controller
             if (!$category->save()) {
                 $this->view->error = 'duplicate categories';
             }
-
-            $this->show();
         }
     }
 

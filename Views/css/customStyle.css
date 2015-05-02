@@ -1,0 +1,188 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url(sansation_light.woff);
+}
+
+.required{
+    color: #EB6864;
+    margin-left: 2px;
+}
+.description{
+    padding-left: 13px;
+}
+
+.slider{
+	margin-top: -10px;
+}
+
+.button-next{
+	display: block;
+	position: absolute;
+	right: 1px;
+	bottom: 10px;
+	background-color: transparent;
+	border: none;
+	font-size: 40px;
+	color: brown;
+	outline: none;
+}
+.button-prev{
+	display: block;
+	position: absolute;
+	left: 1px;
+	bottom: 10px;
+	color: brown;
+	background-color: transparent;
+	border: none;
+	font-size: 40px;
+	outline: none;
+}
+
+.image-title{
+	font-family: 'Lobster', cursive;
+	position: absolute;
+	top: 20px;
+	margin-left: 0.5%;
+	font-size: 30px;
+	color: brown;
+}
+
+#section-rating-albums, #section-albums{
+	font-family: 'Lobster', cursive;
+	font-weight: normal;
+	margin-top: 70px;
+}
+
+.album-container{
+	border: 2px solid lightgray;
+	box-shadow: 5px 3px 6px gray;
+	border-radius: 10px;
+	margin-top: 20px;
+	padding: 10px;
+}
+
+.album-image-avatar{
+	max-width: 100%;
+	border-radius: 5px;
+}
+.album-image-container, .album-information-container, .album-voting-container{
+	display: inline-block;
+	vertical-align: top;
+}
+
+.album-title{
+	font-family: 'Lobster', cursive;
+	font-weight: normal;
+	margin: 0;
+	margin-top: 8px;
+	font-size: 22px;
+	text-decoration: underline;
+}
+
+.comment-buttons-container{
+	position: absolute;
+	bottom: 10px;
+	left: 60%;
+}
+
+.voting-container{
+	right: -45px;
+	position: absolute;
+	top: 25%;
+}
+
+.voting-counter, .voting-buttons-container{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.like, .dislike{
+	display: block;
+	font-size: 26px;
+	margin-top: 3px;
+}
+
+.like:active{
+	color: blue;
+	position: relative;
+	top: -1px;
+}
+.dislike:active{
+	color: blue;
+	position: relative;
+	top: 3px;
+}
+
+.voting-counter{
+	font-size: 24px;
+	margin-right: 5px;
+}
+
+.slider-image{
+	max-width: 100%;
+	min-width: 100%;
+}
+
+.slick-list{
+	max-height: 500px;
+}
+
+.open-modal{
+	margin-left: 5px;
+}
+.album-name{
+	text-decoration: underline;
+	font-style: italic;
+}
+
+.modal-album-name-container{
+	display: inline-block;
+}
+
+#ohsnap{
+	margin: 0;
+}
+
+.login-singup-menu{
+	float: right;
+}
+
+.greetings-container{
+	float: right;
+	display: none;
+}
+
+#logout-button{
+	font-weight: bold;
+}
+
+.text-center{
+	text-align: center !important;
+}
+
+#categories-container li {
+    font-family: 'Lobster',cursive;
+    font-weight: normal;
+    margin: 8px 0 0 0;
+    font-size: 22px;
+    text-decoration: underline
+}
+
+#categories-container h1 {
+    font-family: 'Lobster', cursive;
+    font-weight: normal;
+    margin: 0;
+}
+
+#categories-list {
+    margin-top: 25px;
+}
+
+@media all and (max-width: 767px){
+	.login-singup-menu{
+		float: none !important;
+	}
+	.greetings-container{
+		float: none !important;
+	}
+}

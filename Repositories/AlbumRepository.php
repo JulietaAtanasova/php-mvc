@@ -4,6 +4,7 @@ namespace PhotoAlbum\Repositories;
 
 use PhotoAlbum\Db;
 use PhotoAlbum\Models\Album;
+use PhotoAlbum\Models\Category;
 
 class AlbumRepository
 {
@@ -112,20 +113,19 @@ class AlbumRepository
     }
 
     /**
-     * @param $id
-     * @return Album[]
+     * @param Category $category
+     * @return array
      */
-    public function getByCategory($id){
+    public function getByCategory(Category $category){
         $query = "SELECT id, name, description, category_id, user_id FROM albums WHERE category_id = ?";
 
-        $this->db->query($query, [$id]);
+        $this->db->query($query, [$category->getId()]);
 
         $result = $this->db->fetchAll();
         $collection = [];
 
         foreach ($result as $row)
         {
-            $category = CategoryRepository::create()->getOne($row['category_id']);
             $user = UserRepository::create()->getOne($row['user_id']);
 
             $album = new Album(
@@ -136,7 +136,7 @@ class AlbumRepository
                 $row['id']
             );
 
-            $pictures = PictureRepository::create()->getByAlbum($row['id']);
+            $pictures = PictureRepository::create()->getByAlbum($album);
             $album->setPictures($pictures);
             $collection[] = $album;
         }

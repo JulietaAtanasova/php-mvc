@@ -5,6 +5,7 @@ class View
 {
     private $controllerName;
     private $actionName;
+    private $root;
 
     public function __construct($controllerName, $actionName)
     {
@@ -15,6 +16,10 @@ class View
         }
 
         $this->actionName = $actionName;
+        $requestUri = str_replace($controllerName, "", $_SERVER['REQUEST_URI']);
+        $requestUri = str_replace($actionName, "", $requestUri);
+        $host = "//" . $_SERVER['HTTP_HOST'] . $requestUri;
+        $this->root = $host;
     }
 
     public function render()

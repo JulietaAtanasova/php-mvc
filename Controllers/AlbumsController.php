@@ -6,10 +6,11 @@ use PhotoAlbum\Models\Album;
 use PhotoAlbum\Models\AlbumComment;
 use PhotoAlbum\Models\AlbumVote;
 use PhotoAlbum\Repositories\AlbumRepository;
+use PhotoAlbum\Repositories\AlbumVoteRepository;
 use PhotoAlbum\Repositories\CategoryRepository;
 use PhotoAlbum\Repositories\UserRepository;
 
-class AlbumsController extends Controller
+class AlbumsController extends HomeController
 {
     public function showAll()
     {
@@ -24,6 +25,13 @@ class AlbumsController extends Controller
         if(!$album){
             $this->view->error = 'No such album.';
             $this->view->name = "";
+            $this->view->name = "";
+            $this->view->category = "";
+            $this->view->user = "";
+            $this->view->pictures = "";
+            $this->view->comments = "";
+            $this->view->description = "";
+            $this->view->rating = "";
             return;
         }
 
@@ -196,14 +204,22 @@ class AlbumsController extends Controller
                 return;
             }
 
-            if(!is_int((float)$text)){
-                $this->view->error = 'invalid rate value';
+            if(!(floor((float)$text) == (float)$text)) {
+                $this->view->error = 'rate must be integer number';
                 return;
             }
             $rate = (int)$text;
             if($rate < 1 || $rate > 10){
-                $this->view->error = 'invalid rate value';
+                $this->view->error = 'rate must be between 1 and 10';
                 return;
+            }
+
+            $votes = AlbumVoteRepository::create()->getByAlbum($album);
+            foreach($votes as $vote) {
+                if($vote->getUser()->getId() == $_SESSION['userid']){
+                    $this->view->error = 'you are already vote for this album';
+                    return;
+                }
             }
 
             $user = UserRepository::create()->getOne($_SESSION['userid']);

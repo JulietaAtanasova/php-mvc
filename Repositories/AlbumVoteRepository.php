@@ -68,7 +68,7 @@ class AlbumVoteRepository
 
     /**
      * @param Album $album
-     * @return array
+     * @return AlbumVote[]
      */
     public function getByAlbum(Album $album){
         $query = "SELECT id, rate, album_id, user_id FROM album_votes WHERE album_id = ?";

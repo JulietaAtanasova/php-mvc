@@ -4,7 +4,7 @@ namespace PhotoAlbum\Controllers;
 use PhotoAlbum\Models\User;
 use PhotoAlbum\Repositories\UserRepository;
 
-class UsersController extends Controller
+class UsersController extends HomeController
 {
     public function login()
     {
@@ -25,6 +25,9 @@ class UsersController extends Controller
             }
 
             $_SESSION['userid'] = $user->getId();
+            if ($user->isAdmin()) {
+                $_SESSION['admin'] = true;
+            }
             $this->view->user = $user->getUsername();
             $this->redirect('home');
         }
@@ -50,6 +53,6 @@ class UsersController extends Controller
     public function logout()
     {
         session_destroy();
-        die;
+        $this->redirect('home');
     }
 }

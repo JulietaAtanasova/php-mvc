@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 //ini_set('display_errors', 1);
 spl_autoload_register(function($className) {
     $classPathSplitted = explode('\\', $className);
@@ -43,7 +44,7 @@ foreach ($scriptName as $k => $v) {
 }
 $actionIndex = $controllerIndex + 1;
 $controllerName = $requestUri[$controllerIndex];
-$actionName = $requestUri[$actionIndex];
+$actionName = isset($requestUri[$actionIndex]) ? $requestUri[$actionIndex] : 'index';
 
 $controllerClassName = '\\PhotoAlbum\\Controllers\\'
     . ucfirst($controllerName)

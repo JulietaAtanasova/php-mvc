@@ -8,7 +8,7 @@ use PhotoAlbum\Repositories\AlbumRepository;
 use PhotoAlbum\Repositories\PictureRepository;
 use PhotoAlbum\Repositories\UserRepository;
 
-class PicturesController extends Controller
+class PicturesController extends HomeController
 {
     public function show()
     {

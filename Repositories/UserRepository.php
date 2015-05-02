@@ -61,7 +61,7 @@ class UserRepository
 
     public function getOne($id)
     {
-        $query = "SELECT id, username, password FROM users WHERE id = ?";
+        $query = "SELECT id, username, password, is_admin FROM users WHERE id = ?";
 
         $this->db->query($query, [$id]);
 
@@ -74,7 +74,8 @@ class UserRepository
         $user = new User(
             $result['username'],
             $result['password'],
-            $result['id']
+            $result['id'],
+            $result['is_admin']
         );
 
         return $user;
@@ -85,7 +86,7 @@ class UserRepository
      */
     public function getAll()
     {
-        $query = "SELECT id, username, password FROM users";
+        $query = "SELECT id, username, password, is_admin FROM users";
 
         $this->db->query($query);
 
@@ -97,7 +98,8 @@ class UserRepository
             $collection[] = new User(
                 $row['username'],
                 $row['password'],
-                $row['id']
+                $row['id'],
+                $row['is_admin']
             );
         }
 

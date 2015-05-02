@@ -11,11 +11,24 @@ class User
 
     private $password;
 
-    public function __construct($username, $password, $id = null)
+    private $isAdmin;
+
+    public function __construct($username, $password, $id = null, $isAdmin = false)
     {
         $this->setUsername($username);
         $this->setPassword($password);
         $this->setId($id);
+        $this->setAdmin($isAdmin);
+    }
+
+    private function setAdmin($admin)
+    {
+        $this->isAdmin = (bool)$admin;
+    }
+
+    public function isAdmin()
+    {
+        return $this->isAdmin;
     }
 
     /**
